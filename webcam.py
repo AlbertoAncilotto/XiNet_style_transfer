@@ -6,7 +6,7 @@ from utils import model_info
 import numpy as np
 
 
-STYLE_TRANSFORM_PATHS = [  "checkpoints/spaghetti256_a75/model/checkpoint_0.pth"]
+STYLE_TRANSFORM_PATHS = [  "models/spaghetti256_a75/model/checkpoint.pth"]
 PRESERVE_COLOR = [False, False, False, False]
 WIDTH = 160
 HEIGHT = 160
