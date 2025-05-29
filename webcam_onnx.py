@@ -5,8 +5,8 @@ import utils
 
 STYLE_TRANSFORM_PATHS = ['style_transfer.onnx']
 PRESERVE_COLOR = [False]
-WIDTH = 256
-HEIGHT = 256
+WIDTH = 160
+HEIGHT = 160
 
 
 def webcam(style_transform_paths, width=1280, height=720):
@@ -26,7 +26,7 @@ def webcam(style_transform_paths, width=1280, height=720):
         img = cv2.resize(img, (width, height))
         
         content_tensor = np.transpose(img, (2, 0, 1))
-        content_tensor = np.expand_dims(content_tensor, axis=0).astype(np.float32)/255.0
+        content_tensor = np.expand_dims(content_tensor, axis=0).astype(np.float32)#/255.0
         
         generated_tensor = ort_sessions[model_id].run([output_name], {input_name: content_tensor})[0]
         generated_image = generated_tensor.squeeze()
