@@ -4,3 +4,4 @@ matplotlib
 numpy == 2.0.2
 opencv-python
 onnxruntime
+thop

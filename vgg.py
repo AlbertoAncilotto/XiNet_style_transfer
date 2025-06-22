@@ -12,7 +12,7 @@ class VGG19(nn.Module):
             print(f"Downloading VGG19 weights from {vgg_path}...")
             urllib.request.urlretrieve("https://web.eecs.umich.edu/~justincj/models/vgg19-d01eb7cb.pth", "models/vgg19-d01eb7cb.pth")
         vgg19_features = models.vgg19(pretrained=False)
-        vgg19_features.load_state_dict(torch.load(vgg_path), strict=False)
+        vgg19_features.load_state_dict(torch.load(vgg_path, weights_only=False), strict=False)
         self.features = vgg19_features.features
 
         # Turn-off Gradient History
