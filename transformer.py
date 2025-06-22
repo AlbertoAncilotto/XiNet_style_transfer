@@ -13,11 +13,11 @@ class TransformerNetworkXiNet(nn.Module):
             XiConv(64*alpha, 128*alpha, 3, pool = 2, norm=norm),
         )
         self.ResidualBlock = nn.Sequential(
-            ResidualLayer(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
-            ResidualLayer(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
-            ResidualLayer(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
-            ResidualLayer(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
-            ResidualLayer(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch')
+            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
+            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
+            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
+            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
+            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch')
         )
         self.DeconvBlock = nn.Sequential(
             torch.nn.Upsample(scale_factor=2, mode='nearest'),
@@ -72,9 +72,9 @@ class ConvLayer(nn.Module):
             out = self.norm_layer(x)
         return out
 
-class ResidualLayer(nn.Module):
+class XiResidual(nn.Module):
     def __init__(self, channels=128, kernel_size=3, norm='instance'):
-        super(ResidualLayer, self).__init__()
+        super(XiResidual, self).__init__()
         self.conv1 = ConvLayer(channels, channels, kernel_size, stride=1, norm=norm)
         self.relu = nn.ReLU()
         self.conv2 = ConvLayer(channels, channels, kernel_size, stride=1, norm=norm)

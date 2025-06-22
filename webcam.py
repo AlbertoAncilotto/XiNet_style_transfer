@@ -8,8 +8,8 @@ import numpy as np
 
 STYLE_TRANSFORM_PATHS = [  "models/spaghetti256_a75/model/checkpoint.pth"]
 PRESERVE_COLOR = [False, False, False, False]
-WIDTH = 160
-HEIGHT = 160
+WIDTH = 320
+HEIGHT = 320
 
 def webcam(style_transform_paths, width=1280, height=720):
     device = ("cuda" if torch.cuda.is_available() else "cpu")
@@ -25,7 +25,6 @@ def webcam(style_transform_paths, width=1280, height=720):
 
 
     cam = cv2.VideoCapture(0)
-    # cam = cv2.VideoCapture('picture_frame\BNS2023.mp4')
     cam.set(3, width)
     model_id=0
     added_noise=(np.random.rand(height, width, 3)-0.5)*20
