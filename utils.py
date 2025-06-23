@@ -140,7 +140,7 @@ def save_outputs(batch_count, content_batch, generated_batch, transformer, save_
     plt.axis("off")
     plt.show()
 
-def model_info(model, verbose=True, img_size=224, latent_size=512, folded = False):
+def model_info(model, verbose=True, img_size=224, get_flops=False):
     n_p = sum(x.numel() for x in model.parameters())  
     n_g = sum(x.numel() for x in model.parameters() if x.requires_grad) 
     if verbose:
@@ -150,7 +150,7 @@ def model_info(model, verbose=True, img_size=224, latent_size=512, folded = Fals
             print('%5g %40s %9s %12g %20s %10.3g %10.3g' %
                   (i, name, p.requires_grad, p.numel(), list(p.shape), p.mean(), p.std()))
 
-    if True:
+    if get_flops:
         from thop import profile
         from copy import deepcopy
         stride = max(int(model.stride.max()), 32) if hasattr(model, 'stride') else 32
