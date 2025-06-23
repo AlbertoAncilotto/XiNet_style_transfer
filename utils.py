@@ -159,6 +159,9 @@ def model_info(model, verbose=True, img_size=224, get_flops=False):
         img_size = img_size if isinstance(img_size, list) else [img_size, img_size]  
         mmacc = flops * img_size[0] / stride * img_size[1] / stride / 2
         fs = ', %.1f M MACC' % (mmacc) 
+    else:
+        mmacc = 0
+        fs = ''
 
 
     print(f"Model Summary: {len(list(model.modules()))} layers, {n_p} parameters, {n_g} gradients{fs}, @{img_size}")
