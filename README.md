@@ -1,5 +1,8 @@
 # XiNet Style Transfer - Training Notebook
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1EFQ5R8FS5KrzOagKNiRBDcJhj1elPOz2?usp=sharing)
+
+
 This project provides a **PyTorch-based implementation** for training neural style transfer models using the **XiNet architecture**. The main training workflow is contained in `train_notebook.ipynb`, which demonstrates how to set up the dataset, configure training parameters, load models, compute losses, and run the training loop.
 
 ## Key Features

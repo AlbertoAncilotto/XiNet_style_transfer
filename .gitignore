@@ -1,4 +1,6 @@
 models
 models/
+checkpoints
+checkpoints/
 *.pth
 __pycache__/
