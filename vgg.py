@@ -9,6 +9,7 @@ class VGG19(nn.Module):
         super(VGG19, self).__init__()
         # Load VGG Skeleton, Pretrained Weights
         if not os.path.exists(vgg_path):
+            os.makedirs(os.path.dirname(vgg_path), exist_ok=True)
             print(f"Downloading VGG19 weights from {vgg_path}...")
             urllib.request.urlretrieve("https://web.eecs.umich.edu/~justincj/models/vgg19-d01eb7cb.pth", "models/vgg19-d01eb7cb.pth")
         vgg19_features = models.vgg19(pretrained=False)
