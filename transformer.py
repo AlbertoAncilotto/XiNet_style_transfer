@@ -3,29 +3,29 @@ import torch.nn as nn
 from utils import model_info
 
 class TransformerNetworkXiNet(nn.Module):
-    def __init__(self, alpha=1.0, lite=False, num_pool=0, bn_instead_of_in=False):
+    def __init__(self, alpha=1.0, beta=1.0, gamma=4, lite=False, num_pool=0, bn_instead_of_in=False):
         super(TransformerNetworkXiNet, self).__init__()
         self.num_pool = num_pool
         norm = 'instancenorm2d' if not bn_instead_of_in else 'batchnorm'
         self.ConvBlock = nn.Sequential(
-            XiConv(3, 16*alpha, 9  if not lite else 3, pool = 1 if not lite else 2, norm=norm),
-            XiConv(16*alpha, 64*alpha, 3, pool = 2, norm=norm),
-            XiConv(64*alpha, 128*alpha, 3, pool = 2, norm=norm),
+            XiConv(3, 16*alpha, 9  if not lite else 3, pool = 1 if not lite else 2, norm=norm, compression=gamma),
+            XiConv(16*alpha, 64*alpha, 3, pool = 2, norm=norm, compression=gamma),
+            XiConv(64*alpha, 128*alpha*beta, 3, pool = 2, norm=norm, compression=gamma),
         )
         self.ResidualBlock = nn.Sequential(
-            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
-            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
-            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
-            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
-            XiResidual(int(128*alpha), 3, norm='instance' if not bn_instead_of_in else 'batch')
+            XiResidual(int(128*alpha*beta), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
+            XiResidual(int(128*alpha*beta), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
+            XiResidual(int(128*alpha*beta), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
+            XiResidual(int(128*alpha*beta), 3, norm='instance' if not bn_instead_of_in else 'batch'), 
+            XiResidual(int(128*alpha*beta), 3, norm='instance' if not bn_instead_of_in else 'batch')
         )
         self.DeconvBlock = nn.Sequential(
             torch.nn.Upsample(scale_factor=2, mode='nearest'),
-            XiConv(128*alpha, 64*alpha, 3, norm=norm),
+            XiConv(128*alpha*beta, 64*alpha, 3, norm=norm, compression=gamma),
             torch.nn.Upsample(scale_factor=2, mode='nearest'),
-            XiConv(64*alpha, 32*alpha, 3, norm=norm),
+            XiConv(64*alpha, 32*alpha, 3, norm=norm, compression=gamma),
             torch.nn.Upsample(scale_factor=2, mode='nearest') if lite else torch.nn.Identity(),
-            XiConv(32*alpha, 16*alpha, 3, norm=norm),
+            XiConv(32*alpha, 16*alpha, 3, norm=norm, compression=gamma),
             ConvLayer(int(16*alpha), 3, 9 if not lite else 5, 1, norm="None"),
             nn.Sigmoid()
         )
